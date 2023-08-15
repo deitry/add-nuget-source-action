@@ -1,20 +1,19 @@
-import * as core from '@actions/core'
+import * as core from '@actions/core';
 import { v4 as uuidv4 } from 'uuid';
 import { getPackageSourceList } from './dotnet';
-
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
 
 async function run(): Promise<void> {
   try {
     // core.setOutput('time', new Date().toTimeString())
 
-    const url: string = core.getInput('url')
-    const username: string = core.getInput('username')
-    const pwd: string = core.getInput('password')
+    const url: string = core.getInput('url');
+    const username: string = core.getInput('username');
+    const pwd: string = core.getInput('password');
 
     const packageSourceList = getPackageSourceList();
 
-    const sourceAdded = packageSourceList.some(element => element.url == url);
+    const sourceAdded = packageSourceList.some(element => element.url === url);
     if (sourceAdded) {
       core.info(`Source ${url} already exists`);
       return;
@@ -32,20 +31,19 @@ async function run(): Promise<void> {
         `--password ${pwd}`,
 
         // --store-password-in-clear-text is mandatory for non-Windows machines
-        '--store-password-in-clear-text',
+        '--store-password-in-clear-text'
       ].join(' ');
 
       core.info(`Adding source: ${command}`);
 
       execSync(command, { stdio: 'inherit' });
-    }
-    else {
+    } else {
       // public package source
 
       const command = [
         'dotnet nuget add source',
         `"${url}"`,
-        `--name "${packageSourceName}"`,
+        `--name "${packageSourceName}"`
       ].join(' ');
 
       core.info(`Adding source: ${command}`);
@@ -53,8 +51,8 @@ async function run(): Promise<void> {
       execSync(command, { stdio: 'inherit' });
     }
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) core.setFailed(error.message);
   }
 }
 
-run()
+run();

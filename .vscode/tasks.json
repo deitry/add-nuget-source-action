@@ -8,6 +8,11 @@
             "group": "test",
             "type": "shell",
             "command": "npm test"
-        }
+        },
+        {
+            "label": "Run linter",
+            "type": "shell",
+            "command": "npm run lint"
+        },
     ]
 }
