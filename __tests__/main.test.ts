@@ -51,9 +51,9 @@ test('parse multiple sources', async () => {
 
 // shows how the runner will run a javascript action with env / stdout protocol
 test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500';
+  process.env['INPUT_URL'] = 'https://api.nuget.org/v3/index.json';
   const np = process.execPath;
-  const ip = path.join(__dirname, '..', 'lib', 'main.js');
+  const ip = path.join(__dirname, '..', 'dist', 'main.js');
   const options: cp.ExecFileSyncOptions = {
     env: process.env
   };

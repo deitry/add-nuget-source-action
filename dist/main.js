@@ -41,6 +41,8 @@ function run() {
         try {
             // core.setOutput('time', new Date().toTimeString())
             const url = core.getInput('url');
+            if (!url)
+                throw new Error('url input parameter is required');
             const username = core.getInput('username');
             const pwd = core.getInput('password');
             const packageSourceList = (0, dotnet_1.getPackageSourceList)();
@@ -76,8 +78,11 @@ function run() {
             }
         }
         catch (error) {
-            if (error instanceof Error)
+            if (error instanceof Error) {
                 core.setFailed(error.message);
+                if (error.stack)
+                    core.debug(error.stack);
+            }
         }
     });
 }

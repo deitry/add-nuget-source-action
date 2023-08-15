@@ -8,6 +8,8 @@ async function run(): Promise<void> {
     // core.setOutput('time', new Date().toTimeString())
 
     const url: string = core.getInput('url');
+    if (!url) throw new Error('url input parameter is required');
+
     const username: string = core.getInput('username');
     const pwd: string = core.getInput('password');
 
@@ -51,7 +53,10 @@ async function run(): Promise<void> {
       execSync(command, { stdio: 'inherit' });
     }
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message);
+    if (error instanceof Error) {
+      core.setFailed(error.message);
+      if (error.stack) core.debug(error.stack);
+    }
   }
 }
 

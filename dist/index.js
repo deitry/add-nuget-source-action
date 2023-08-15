@@ -1,14 +1,38 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 7129:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ 2802:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.parsePackageSources = exports.getPackageSourceList = exports.PackageSource = void 0;
-const { execSync } = __nccwpck_require__(2081);
+const core = __importStar(__nccwpck_require__(2186));
+const child_process_1 = __nccwpck_require__(2081);
 class PackageSource {
     constructor(url, name) {
         this.url = url;
@@ -18,31 +42,39 @@ class PackageSource {
 exports.PackageSource = PackageSource;
 function getPackageSourceList() {
     const dotnetListSourceCmd = 'dotnet nuget list source --format Detailed';
-    console.log(dotnetListSourceCmd);
-    const dotnetListSourceResult = execSync(dotnetListSourceCmd).stdout;
+    core.info(dotnetListSourceCmd);
+    const dotnetListSourceResult = (0, child_process_1.execSync)(dotnetListSourceCmd);
     return parsePackageSources(dotnetListSourceResult.toString().split('\n'));
 }
 exports.getPackageSourceList = getPackageSourceList;
-function parsePackageSources(dotnetListSourceResult) {
-    let result = [];
+function parsePackageSources(input) {
+    if (input.length === 0) {
+        core.info('No package sources found');
+        return [];
+    }
+    const result = [];
     let currentName = null;
-    dotnetListSourceResult.forEach(line => {
-        if (line == "Registered Sources:")
-            return;
+    for (const line of input) {
+        const trimmedLine = line.trim();
+        core.debug(`line: ${trimmedLine}`);
+        if (!trimmedLine)
+            continue;
+        if (trimmedLine === 'Registered Sources:')
+            continue;
         if (currentName == null) {
             // expect first line to be in the form of "  1. PackageName [Enabled]"
-            const dropNumber = line.split('. ')[1].trim();
+            const dropNumber = trimmedLine.split('. ')[1].trim();
             const dropStatus = dropNumber.split('[')[0].trim();
             currentName = dropStatus;
         }
         else {
             // and second line to be in the form of "     https://api.nuget.org/v3/index.json"
-            const url = line.trim();
+            const url = trimmedLine;
             const packageSource = new PackageSource(url, currentName);
             result.push(packageSource);
             currentName = null;
         }
-    });
+    }
     return result;
 }
 exports.parsePackageSources = parsePackageSources;
@@ -50,7 +82,7 @@ exports.parsePackageSources = parsePackageSources;
 
 /***/ }),
 
-/***/ 3109:
+/***/ 9496:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -90,17 +122,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const uuid_1 = __nccwpck_require__(5840);
-const dotnet_1 = __nccwpck_require__(7129);
-const { execSync } = __nccwpck_require__(2081);
+const dotnet_1 = __nccwpck_require__(2802);
+const child_process_1 = __nccwpck_require__(2081);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // core.setOutput('time', new Date().toTimeString())
             const url = core.getInput('url');
+            if (!url)
+                throw new Error('url input parameter is required');
             const username = core.getInput('username');
             const pwd = core.getInput('password');
             const packageSourceList = (0, dotnet_1.getPackageSourceList)();
-            const sourceAdded = packageSourceList.some(element => element.url == url);
+            const sourceAdded = packageSourceList.some(element => element.url === url);
             if (sourceAdded) {
                 core.info(`Source ${url} already exists`);
                 return;
@@ -115,25 +149,28 @@ function run() {
                     `--username ${username}`,
                     `--password ${pwd}`,
                     // --store-password-in-clear-text is mandatory for non-Windows machines
-                    '--store-password-in-clear-text',
+                    '--store-password-in-clear-text'
                 ].join(' ');
                 core.info(`Adding source: ${command}`);
-                execSync(command, { stdio: 'inherit' });
+                (0, child_process_1.execSync)(command, { stdio: 'inherit' });
             }
             else {
                 // public package source
                 const command = [
                     'dotnet nuget add source',
                     `"${url}"`,
-                    `--name "${packageSourceName}"`,
+                    `--name "${packageSourceName}"`
                 ].join(' ');
                 core.info(`Adding source: ${command}`);
-                execSync(command, { stdio: 'inherit' });
+                (0, child_process_1.execSync)(command, { stdio: 'inherit' });
             }
         }
         catch (error) {
-            if (error instanceof Error)
+            if (error instanceof Error) {
                 core.setFailed(error.message);
+                if (error.stack)
+                    core.debug(error.stack);
+            }
         }
     });
 }
@@ -3648,7 +3685,7 @@ module.exports = require("util");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(3109);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(9496);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
