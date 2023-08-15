@@ -41,6 +41,11 @@ const child_process_1 = require("child_process");
 function postAction() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            const needCleanup = core.getState('needCleanup');
+            if (!needCleanup) {
+                core.info('No cleanup needed');
+                return;
+            }
             const url = core.getInput('url');
             const sourceList = (0, dotnet_1.getPackageSourceList)();
             for (const source of sourceList) {

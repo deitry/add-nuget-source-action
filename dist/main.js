@@ -76,6 +76,7 @@ function run() {
                 core.info(`Adding source: ${command}`);
                 (0, child_process_1.execSync)(command, { stdio: 'inherit' });
             }
+            core.saveState('needCleanup', true);
         }
         catch (error) {
             if (error instanceof Error) {

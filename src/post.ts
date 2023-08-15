@@ -7,9 +7,9 @@ import { execSync } from 'child_process';
  */
 async function postAction(): Promise<void> {
   try {
-    var needCleanup = core.getState("needCleanup");
+    const needCleanup = core.getState('needCleanup');
     if (!needCleanup) {
-      core.info("No cleanup needed");
+      core.info('No cleanup needed');
       return;
     }
 
