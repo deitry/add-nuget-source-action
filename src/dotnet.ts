@@ -16,6 +16,7 @@ export function getPackageSourceList(): PackageSource[] {
   core.info(dotnetListSourceCmd);
 
   const dotnetListSourceResult = execSync(dotnetListSourceCmd);
+  core.info(dotnetListSourceResult.toString());
 
   return parsePackageSources(dotnetListSourceResult.toString().split('\n'));
 }
