@@ -40,7 +40,13 @@ export function parsePackageSources(input: string[]): PackageSource[] {
 
     if (currentName == null) {
       // expect first line to be in the form of "  1. PackageName [Enabled]"
-      const dropNumber = trimmedLine.split('. ')[1].trim();
+      const splitByDot = trimmedLine.split('. ');
+      if (splitByDot.length < 2) {
+        core.info(`Unexpected line: ${trimmedLine}`);
+        continue;
+      }
+
+      const dropNumber = splitByDot[1].trim();
       const dropStatus = dropNumber.split('[')[0].trim();
 
       currentName = dropStatus;
