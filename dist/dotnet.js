@@ -1,7 +1,31 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parsePackageSources = exports.getPackageSourceList = exports.PackageSource = void 0;
-const { execSync } = require('child_process');
+const core = __importStar(require("@actions/core"));
+const child_process_1 = require("child_process");
 class PackageSource {
     constructor(url, name) {
         this.url = url;
@@ -11,16 +35,16 @@ class PackageSource {
 exports.PackageSource = PackageSource;
 function getPackageSourceList() {
     const dotnetListSourceCmd = 'dotnet nuget list source --format Detailed';
-    console.log(dotnetListSourceCmd);
-    const dotnetListSourceResult = execSync(dotnetListSourceCmd).stdout;
+    core.info(dotnetListSourceCmd);
+    const dotnetListSourceResult = (0, child_process_1.execSync)(dotnetListSourceCmd);
     return parsePackageSources(dotnetListSourceResult.toString().split('\n'));
 }
 exports.getPackageSourceList = getPackageSourceList;
 function parsePackageSources(input) {
     const result = [];
     let currentName = null;
-    for (let line of input) {
-        if (line == 'Registered Sources:')
+    for (const line of input) {
+        if (line === 'Registered Sources:')
             continue;
         if (currentName == null) {
             // expect first line to be in the form of "  1. PackageName [Enabled]"

@@ -1,8 +1,8 @@
-import {PackageSource, parsePackageSources} from '../src/dotnet';
+import { PackageSource, parsePackageSources } from '../src/dotnet';
 import * as process from 'process';
 import * as cp from 'child_process';
 import * as path from 'path';
-import {expect, test} from '@jest/globals';
+import { expect, test } from '@jest/globals';
 
 test('returns empty list', async () => {
   const result = await parsePackageSources([]);

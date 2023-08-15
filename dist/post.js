@@ -34,7 +34,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(require("@actions/core"));
 const dotnet_1 = require("./dotnet");
-const { execSync } = require('child_process');
+const child_process_1 = require("child_process");
 /**
  * Action that should be run at the end of the workflow
  */
@@ -43,13 +43,13 @@ function postAction() {
         try {
             const url = core.getInput('url');
             const sourceList = (0, dotnet_1.getPackageSourceList)();
-            sourceList.forEach(source => {
+            for (const source of sourceList) {
                 if (source.url === url) {
                     const command = `dotnet nuget remove source "${source.name}"`;
                     core.info(`Removing source: ${command}`);
-                    execSync(command, { stdio: 'inherit' });
+                    (0, child_process_1.execSync)(command, { stdio: 'inherit' });
                 }
-            });
+            }
         }
         catch (error) {
             if (error instanceof Error)

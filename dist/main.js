@@ -35,7 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(require("@actions/core"));
 const uuid_1 = require("uuid");
 const dotnet_1 = require("./dotnet");
-const { execSync } = require('child_process');
+const child_process_1 = require("child_process");
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -44,7 +44,7 @@ function run() {
             const username = core.getInput('username');
             const pwd = core.getInput('password');
             const packageSourceList = (0, dotnet_1.getPackageSourceList)();
-            const sourceAdded = packageSourceList.some(element => element.url == url);
+            const sourceAdded = packageSourceList.some(element => element.url === url);
             if (sourceAdded) {
                 core.info(`Source ${url} already exists`);
                 return;
@@ -62,7 +62,7 @@ function run() {
                     '--store-password-in-clear-text'
                 ].join(' ');
                 core.info(`Adding source: ${command}`);
-                execSync(command, { stdio: 'inherit' });
+                (0, child_process_1.execSync)(command, { stdio: 'inherit' });
             }
             else {
                 // public package source
@@ -72,7 +72,7 @@ function run() {
                     `--name "${packageSourceName}"`
                 ].join(' ');
                 core.info(`Adding source: ${command}`);
-                execSync(command, { stdio: 'inherit' });
+                (0, child_process_1.execSync)(command, { stdio: 'inherit' });
             }
         }
         catch (error) {
