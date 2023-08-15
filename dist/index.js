@@ -56,10 +56,10 @@ function parsePackageSources(input) {
     const result = [];
     let currentName = null;
     for (const line of input) {
+        if (!line)
+            continue;
         const trimmedLine = line.trim();
         core.debug(`line: ${trimmedLine}`);
-        if (!trimmedLine)
-            continue;
         if (trimmedLine === 'Registered Sources:')
             continue;
         if (currentName == null) {

@@ -31,10 +31,11 @@ export function parsePackageSources(input: string[]): PackageSource[] {
   let currentName: string | null = null;
 
   for (const line of input) {
+    if (!line) continue;
+
     const trimmedLine = line.trim();
     core.debug(`line: ${trimmedLine}`);
 
-    if (!trimmedLine) continue;
     if (trimmedLine === 'Registered Sources:') continue;
 
     if (currentName == null) {
