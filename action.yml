@@ -1,11 +1,19 @@
 name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
+
 inputs:
-  milliseconds: # change this
+  url: # change this
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'Url of NuGet package source to add'
+  username:
+    required: false
+    description: 'Username for private NuGet package source access'
+  password:
+    required: false
+    description: 'Password for private NuGet package source access'
+
 runs:
   using: 'node16'
   main: 'dist/index.js'
+  post: dist/post.js

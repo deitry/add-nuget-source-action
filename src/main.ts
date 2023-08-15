@@ -1,16 +1,57 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import { v4 as uuidv4 } from 'uuid';
+import { getPackageSourceList } from './dotnet';
+
+const { execSync } = require('child_process');
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    // core.setOutput('time', new Date().toTimeString())
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const url: string = core.getInput('url')
+    const username: string = core.getInput('username')
+    const pwd: string = core.getInput('password')
 
-    core.setOutput('time', new Date().toTimeString())
+    const packageSourceList = getPackageSourceList();
+
+    const sourceAdded = packageSourceList.some(element => element.url == url);
+    if (sourceAdded) {
+      core.info(`Source ${url} already exists`);
+      return;
+    }
+
+    const packageSourceName = uuidv4();
+    if (username) {
+      // private package source
+
+      const command = [
+        'dotnet nuget add source',
+        `"${url}"`,
+        `--name "${packageSourceName}"`,
+        `--username ${username}`,
+        `--password ${pwd}`,
+
+        // --store-password-in-clear-text is mandatory for non-Windows machines
+        '--store-password-in-clear-text',
+      ].join(' ');
+
+      core.info(`Adding source: ${command}`);
+
+      execSync(command, { stdio: 'inherit' });
+    }
+    else {
+      // public package source
+
+      const command = [
+        'dotnet nuget add source',
+        `"${url}"`,
+        `--name "${packageSourceName}"`,
+      ].join(' ');
+
+      core.info(`Adding source: ${command}`);
+
+      execSync(command, { stdio: 'inherit' });
+    }
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

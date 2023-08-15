@@ -1,20 +1,52 @@
-import {wait} from '../src/wait'
+import { PackageSource, parsePackageSources } from '../src/dotnet'
 import * as process from 'process'
 import * as cp from 'child_process'
 import * as path from 'path'
-import {expect, test} from '@jest/globals'
+import { expect, test } from '@jest/globals'
 
-test('throws invalid number', async () => {
-  const input = parseInt('foo', 10)
-  await expect(wait(input)).rejects.toThrow('milliseconds not a number')
+test('returns empty list', async () => {
+  const result = await parsePackageSources([])
+  expect(result).toEqual([])
 })
 
-test('wait 500 ms', async () => {
-  const start = new Date()
-  await wait(500)
-  const end = new Date()
-  var delta = Math.abs(end.getTime() - start.getTime())
-  expect(delta).toBeGreaterThan(450)
+test('parse single source', async () => {
+  const result = await parsePackageSources([
+    "  1.  nuget.org [Enabled]",
+    "      https://api.nuget.org/v3/index.json",
+  ]);
+
+  expect(result).toEqual([
+    {
+      name: "nuget.org",
+      url: "https://api.nuget.org/v3/index.json",
+    },
+  ]);
+})
+
+test('parse multiple sources', async () => {
+  const result = await parsePackageSources([
+    "  1.  nuget.org [Enabled]",
+    "      https://api.nuget.org/v3/index.json",
+    "  2.  github-private [Enabled]",
+    "      https://nuget.pkg.github.com/my-org/index.json",
+    "  3.  Microsoft Visual Studio Offline Packages [Enabled]",
+    "      C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\",
+  ]);
+
+  expect(result).toEqual([
+    {
+      name: "nuget.org",
+      url: "https://api.nuget.org/v3/index.json",
+    },
+    {
+      name: "github-private",
+      url: "https://nuget.pkg.github.com/my-org/index.json",
+    },
+    {
+      name: "Microsoft Visual Studio Offline Packages",
+      url: "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\",
+    },
+  ]);
 })
 
 // shows how the runner will run a javascript action with env / stdout protocol
