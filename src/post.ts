@@ -7,6 +7,12 @@ import { execSync } from 'child_process';
  */
 async function postAction(): Promise<void> {
   try {
+    var needCleanup = core.getState("needCleanup");
+    if (!needCleanup) {
+      core.info("No cleanup needed");
+      return;
+    }
+
     const url: string = core.getInput('url');
     const sourceList = getPackageSourceList();
 

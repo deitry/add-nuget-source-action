@@ -52,6 +52,8 @@ async function run(): Promise<void> {
 
       execSync(command, { stdio: 'inherit' });
     }
+
+    core.saveState('needCleanup', true);
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);
