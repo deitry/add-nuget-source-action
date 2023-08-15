@@ -21,7 +21,7 @@ export function getPackageSourceList(): PackageSource[] {
 
 export function parsePackageSources(dotnetListSourceResult: string[]): PackageSource[] {
 
-    let result: PackageSource[] = []
+    let result: PackageSource[] = [];
     let currentName: string | null = null;
 
     dotnetListSourceResult.forEach(line => {
