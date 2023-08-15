@@ -62,7 +62,7 @@ function parsePackageSources(input) {
                 core.info(`Unexpected line: ${trimmedLine}`);
                 continue;
             }
-            const dropNumber = trimmedLine.split('. ')[1].trim();
+            const dropNumber = splitByDot[1].trim();
             const dropStatus = dropNumber.split('[')[0].trim();
             currentName = dropStatus;
         }
