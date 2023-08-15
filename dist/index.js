@@ -44,6 +44,7 @@ function getPackageSourceList() {
     const dotnetListSourceCmd = 'dotnet nuget list source --format Detailed';
     core.info(dotnetListSourceCmd);
     const dotnetListSourceResult = (0, child_process_1.execSync)(dotnetListSourceCmd);
+    core.info(dotnetListSourceResult.toString());
     return parsePackageSources(dotnetListSourceResult.toString().split('\n'));
 }
 exports.getPackageSourceList = getPackageSourceList;
