@@ -1,9 +1,9 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Add NuGet package source'
+description: 'Adds NuGet package source to the system if it is not already added and cleans it after the job is finished'
+author: 'deitry'
 
 inputs:
-  url: # change this
+  url:
     required: true
     description: 'Url of NuGet package source to add'
   username:
