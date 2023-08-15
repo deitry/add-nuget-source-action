@@ -1,6 +1,6 @@
 # Add Nuget Source action
 
-Adds NuGet source and clears it in the end of the workflow
+Adds NuGet source and removes it in the end of the workflow. This is useful when adding private package source to self-hosted runners and allows to keep it always in actual state without messing with prior settings.
 
 ## Example
 
