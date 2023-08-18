@@ -36,7 +36,11 @@ export function parsePackageSources(input: string[]): PackageSource[] {
     const trimmedLine = line.trim();
     core.debug(`line: ${trimmedLine}`);
 
-    if (trimmedLine === 'Registered Sources:' || trimmedLine === "No sources found.") continue;
+    if (
+      trimmedLine === 'Registered Sources:' ||
+      trimmedLine === 'No sources found.'
+    )
+      continue;
 
     if (currentName == null) {
       // expect first line to be in the form of "  1. PackageName [Enabled]"
