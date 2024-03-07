@@ -57,7 +57,9 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          url: https://nuget.pkg.github.com/my-org/index.json
+          username: arrivederci
+          password: 123
 
       - name: Print Output
         id: output
