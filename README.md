@@ -6,7 +6,7 @@ Adds NuGet source and removes it in the end of the workflow. This is useful when
 
 ```yaml
 - name: Add NuGet package source
-  uses: deitry/add-nuget-source-action@v1
+  uses: deitry/add-nuget-source-action@v2
   with:
     url: https://nuget.pkg.github.com/my-org/index.json
     username: arrivederci
