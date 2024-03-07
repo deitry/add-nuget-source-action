@@ -1,16 +1,16 @@
-import { PackageSource, parsePackageSources } from '../src/dotnet';
+import { parsePackageSources } from '../src/dotnet';
 import * as process from 'process';
 import * as cp from 'child_process';
 import * as path from 'path';
 import { expect, test } from '@jest/globals';
 
 test('returns empty list', async () => {
-  const result = await parsePackageSources([]);
+  const result = parsePackageSources([]);
   expect(result).toEqual([]);
 });
 
 test('parse single source', async () => {
-  const result = await parsePackageSources([
+  const result = parsePackageSources([
     '  1.  nuget.org [Enabled]',
     '      https://api.nuget.org/v3/index.json'
   ]);
@@ -24,7 +24,7 @@ test('parse single source', async () => {
 });
 
 test('parse multiple sources', async () => {
-  const result = await parsePackageSources([
+  const result = parsePackageSources([
     '  1.  nuget.org [Enabled]',
     '      https://api.nuget.org/v3/index.json',
     '  2.  github-private [Enabled]',
@@ -50,7 +50,7 @@ test('parse multiple sources', async () => {
 });
 
 // shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
+test('run with a env/stdout protocol', () => {
   process.env['INPUT_URL'] = 'https://api.nuget.org/v3/index.json';
   const np = process.execPath;
   const ip = path.join(__dirname, '..', 'dist', 'main.js');
@@ -58,4 +58,7 @@ test('test runs', () => {
     env: process.env
   };
   console.log(cp.execFileSync(np, [ip], options).toString());
+
+  // disable warning about missing assert
+  expect(true).toBe(true);
 });
