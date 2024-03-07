@@ -17,6 +17,6 @@ inputs:
     description: 'Password for private NuGet package source access'
 
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/main.js'
   post: dist/post.js
