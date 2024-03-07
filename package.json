@@ -5,7 +5,7 @@
   "description": "Add NuGet package source action",
   "main": "dist/main.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --skipLibCheck",
     "format": "prettier --write \"**/*.ts\"",
     "format-check": "prettier --check \"**/*.ts\"",
     "lint": "eslint src/**/*.ts",
@@ -42,6 +42,7 @@
     "js-yaml": "^4.1.0",
     "prettier": "^3.0.3",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.2",
+    "undici": "^6.7.0"
   }
 }
