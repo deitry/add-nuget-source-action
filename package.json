@@ -69,6 +69,7 @@
   },
   "dependencies": {
     "@actions/core": "^2.0.3",
+    "undici": "^7.22.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
