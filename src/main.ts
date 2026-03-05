@@ -29,7 +29,8 @@ async function run(): Promise<void> {
       execSync(removeCommand, { stdio: 'inherit' });
     }
 
-    const packageSourceName = uuidv4();
+    const packageSourceName = core.getInput('name') || uuidv4();
+    core.setOutput('source_name', packageSourceName);
     if (username) {
       // private package source
 
