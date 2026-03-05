@@ -1,5 +1,8 @@
 name: Lint Codebase
 
+concurrency:
+  group: 'lint-${{ github.ref }}'
+
 on:
   pull_request:
     branches:

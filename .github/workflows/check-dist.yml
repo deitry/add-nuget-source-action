@@ -9,6 +9,9 @@
 # expected from the build.
 name: Check Transpiled JavaScript
 
+concurrency:
+  group: 'check-transpiled-${{ github.ref }}'
+
 on:
   pull_request:
     branches:
