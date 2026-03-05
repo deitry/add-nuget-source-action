@@ -54,7 +54,9 @@ jobs:
           VALIDATE_NATURAL_LANGUAGE: false
           VALIDATE_MARKDOWN: false
           VALIDATE_TYPESCRIPT_ES: false
+          VALIDATE_JSON: false
+          VALIDATE_JSON_PRETTIER: false
+          VALIDATE_TYPESCRIPT_PRETTIER: false
           FIX_BIOME_FORMAT: true
           FIX_BIOME_LINT: true
           FIX_GITHUB_ACTIONS_ZIZMOR: true
-          FIX_JSON: true
