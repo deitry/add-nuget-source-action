@@ -16,7 +16,9 @@ async function run(): Promise<void> {
 
     const packageSourceList = getPackageSourceList();
 
-    const existingSource = packageSourceList.find(element => element.url === url);
+    const existingSource = packageSourceList.find(
+      element => element.url === url
+    );
     if (existingSource) {
       if (!force) {
         core.info(`Source ${url} already exists`);
