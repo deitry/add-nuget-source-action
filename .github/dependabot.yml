@@ -1,6 +1,8 @@
 version: 2
 updates:
   - package-ecosystem: github-actions
+    cooldown:
+      default-days: 30
     directory: /
     schedule:
       interval: monthly
@@ -11,6 +13,8 @@ updates:
           - patch
 
   - package-ecosystem: npm
+    cooldown:
+      default-days: 30
     directory: /
     schedule:
       interval: monthly
