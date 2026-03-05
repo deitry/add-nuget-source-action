@@ -11,4 +11,5 @@ Adds NuGet source and removes it in the end of the workflow. This is useful when
     url: https://nuget.pkg.github.com/my-org/index.json
     username: arrivederci
     password: ${{ secrets.MY_SECRET }}
+    force: true
 ```

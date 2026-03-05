@@ -8,13 +8,16 @@ branding:
 inputs:
   url:
     required: true
-    description: 'Url of NuGet package source to add'
+    description: 'URL of NuGet package source to add'
   username:
     required: false
     description: 'Username for private NuGet package source access'
   password:
     required: false
     description: 'Password for private NuGet package source access'
+  force:
+    required: false
+    description: 'If true, existing entry with the same URL will be overwritten'
 
 runs:
   using: 'node20'
