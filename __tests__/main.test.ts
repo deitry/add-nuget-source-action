@@ -99,6 +99,8 @@ describe('main run function', () => {
             return options.username || '';
           case 'password':
             return options.password || '';
+          case 'force':
+            return options.force ? 'true' : 'false';
           default:
             return '';
         }
@@ -115,7 +117,9 @@ describe('main run function', () => {
     };
 
     mockExecSync = jest.fn();
-    mockGetPackageSourceList = jest.fn().mockReturnValue(options.existingSources || []);
+    mockGetPackageSourceList = jest
+      .fn()
+      .mockReturnValue(options.existingSources || []);
     mockUuidV4 = jest.fn().mockReturnValue('mock-uuid-1234');
 
     // Use isolateModules to get fresh module with our mocks
@@ -142,7 +146,9 @@ describe('main run function', () => {
       const { mockCore, mockExecSync } = await runMain({
         url: 'https://api.nuget.org/v3/index.json',
         force: false,
-        existingSources: [{ name: 'nuget.org', url: 'https://api.nuget.org/v3/index.json' }]
+        existingSources: [
+          { name: 'nuget.org', url: 'https://api.nuget.org/v3/index.json' }
+        ]
       });
 
       expect(mockCore.info).toHaveBeenCalledWith(
@@ -155,7 +161,9 @@ describe('main run function', () => {
       const { mockCore, mockExecSync } = await runMain({
         url: 'https://api.nuget.org/v3/index.json',
         force: true,
-        existingSources: [{ name: 'nuget.org', url: 'https://api.nuget.org/v3/index.json' }]
+        existingSources: [
+          { name: 'nuget.org', url: 'https://api.nuget.org/v3/index.json' }
+        ]
       });
 
       expect(mockCore.info).toHaveBeenCalledWith(
@@ -194,7 +202,10 @@ describe('main run function', () => {
         existingSources: []
       });
 
-      expect(mockCore.setOutput).toHaveBeenCalledWith('source_name', 'my-custom-source');
+      expect(mockCore.setOutput).toHaveBeenCalledWith(
+        'source_name',
+        'my-custom-source'
+      );
       expect(mockExecSync).toHaveBeenCalledWith(
         expect.stringContaining('--name "my-custom-source"'),
         { stdio: 'inherit' }
@@ -208,7 +219,10 @@ describe('main run function', () => {
         existingSources: []
       });
 
-      expect(mockCore.setOutput).toHaveBeenCalledWith('source_name', 'mock-uuid-1234');
+      expect(mockCore.setOutput).toHaveBeenCalledWith(
+        'source_name',
+        'mock-uuid-1234'
+      );
       expect(mockExecSync).toHaveBeenCalledWith(
         expect.stringContaining('--name "mock-uuid-1234"'),
         { stdio: 'inherit' }
@@ -224,7 +238,10 @@ describe('main run function', () => {
         existingSources: []
       });
 
-      expect(mockCore.setOutput).toHaveBeenCalledWith('source_name', 'github-packages');
+      expect(mockCore.setOutput).toHaveBeenCalledWith(
+        'source_name',
+        'github-packages'
+      );
       expect(mockExecSync).toHaveBeenCalledWith(
         expect.stringMatching(/--name "github-packages".*--username user/),
         { stdio: 'inherit' }
