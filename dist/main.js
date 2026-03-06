@@ -14,6 +14,9 @@ function run() {
             const username = core.getInput('username');
             const pwd = core.getInput('password');
             const force = core.getBooleanInput('force');
+            core.info(`Input force: ${force}`);
+            const inputName = core.getInput('name');
+            core.info(`Input name: ${inputName}`);
             const packageSourceList = (0, dotnet_1.getPackageSourceList)();
             const existingSource = packageSourceList.find(element => element.url === url);
             if (existingSource) {
@@ -26,7 +29,7 @@ function run() {
                 core.info(`Removing source: ${removeCommand}`);
                 (0, child_process_1.execSync)(removeCommand, { stdio: 'inherit' });
             }
-            const packageSourceName = core.getInput('name') || (0, uuid_1.v4)();
+            const packageSourceName = inputName || (0, uuid_1.v4)();
             core.setOutput('source_name', packageSourceName);
             if (username) {
                 // private package source
