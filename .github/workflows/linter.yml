@@ -1,5 +1,8 @@
 name: Lint Codebase
 
+concurrency:
+  group: 'lint-${{ github.ref }}'
+
 on:
   pull_request:
     branches:
@@ -21,13 +24,14 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: .node-version
           cache: npm
@@ -38,10 +42,10 @@ jobs:
 
       - name: Lint Codebase
         id: super-linter
-        uses: super-linter/super-linter/slim@v6
+        uses: super-linter/super-linter/slim@61abc07d755095a68f4987d1c2c3d1d64408f1f9 # v8.5.0
         env:
           DEFAULT_BRANCH: main
-          FILTER_REGEX_EXCLUDE: dist/**/*
+          FILTER_REGEX_EXCLUDE: (dist|node_modules)/**/*
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TYPESCRIPT_DEFAULT_STYLE: prettier
           VALIDATE_ALL_CODEBASE: true
@@ -49,3 +53,10 @@ jobs:
           VALIDATE_JSCPD: false
           VALIDATE_NATURAL_LANGUAGE: false
           VALIDATE_MARKDOWN: false
+          VALIDATE_TYPESCRIPT_ES: false
+          VALIDATE_JSON: false
+          VALIDATE_JSON_PRETTIER: false
+          VALIDATE_TYPESCRIPT_PRETTIER: false
+          FIX_BIOME_FORMAT: true
+          FIX_BIOME_LINT: true
+          FIX_GITHUB_ACTIONS_ZIZMOR: true

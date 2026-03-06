@@ -1,0 +1,47 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.5/schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": { "includes": ["**", "!!**/dist"] },
+  "formatter": { "enabled": true, "indentStyle": "tab" },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": false,
+      "complexity": {
+        "noStaticOnlyClass": "error",
+        "noUselessConstructor": "error"
+      },
+      "correctness": { "noUnusedVariables": "error" },
+      "style": {
+        "noCommonJs": "error",
+        "noInferrableTypes": "error",
+        "noNamespace": "error",
+        "noNonNullAssertion": "warn",
+        "useArrayLiterals": "error",
+        "useConsistentArrayType": "error",
+        "useConsistentMemberAccessibility": {
+          "level": "error",
+          "options": { "accessibility": "noPublic" }
+        },
+        "useForOf": "warn",
+        "useShorthandFunctionType": "warn"
+      },
+      "suspicious": {
+        "noExplicitAny": "error",
+        "noMisleadingInstantiator": "error"
+      }
+    },
+    "includes": [
+      "**",
+      "!**/dist/",
+      "!**/lib/",
+      "!**/node_modules/",
+      "!**/coverage/"
+    ]
+  },
+  "javascript": { "formatter": { "quoteStyle": "double" } },
+  "assist": {
+    "enabled": true,
+    "actions": { "source": { "organizeImports": "on" } }
+  }
+}

@@ -12,11 +12,17 @@ async function run(): Promise<void> {
 
     const username: string = core.getInput('username');
     const pwd: string = core.getInput('password');
-    const force: boolean = core.getBooleanInput('force');
+    const force: boolean = core.getInput('force').toLowerCase() === 'true';
+    core.info(`Input force: ${force}`);
+
+    const inputName = core.getInput('name');
+    core.info(`Input name: ${inputName}`);
 
     const packageSourceList = getPackageSourceList();
 
-    const existingSource = packageSourceList.find(element => element.url === url);
+    const existingSource = packageSourceList.find(
+      element => element.url === url
+    );
     if (existingSource) {
       if (!force) {
         core.info(`Source ${url} already exists`);
@@ -29,7 +35,7 @@ async function run(): Promise<void> {
       execSync(removeCommand, { stdio: 'inherit' });
     }
 
-    const packageSourceName = core.getInput('name') || uuidv4();
+    const packageSourceName = inputName || uuidv4();
     core.setOutput('source_name', packageSourceName);
     if (username) {
       // private package source
