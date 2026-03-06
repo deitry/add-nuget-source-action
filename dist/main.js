@@ -13,7 +13,7 @@ function run() {
                 throw new Error('url input parameter is required');
             const username = core.getInput('username');
             const pwd = core.getInput('password');
-            const force = core.getBooleanInput('force');
+            const force = core.getInput('force').toLowerCase() === 'true';
             core.info(`Input force: ${force}`);
             const inputName = core.getInput('name');
             core.info(`Input name: ${inputName}`);

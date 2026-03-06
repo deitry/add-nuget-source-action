@@ -20,6 +20,7 @@ inputs:
     description: 'Password for private NuGet package source access'
   force:
     required: false
+    default: 'false'
     description: 'If true, existing entry with the same URL will be overwritten'
 
 outputs:

@@ -12,7 +12,7 @@ async function run(): Promise<void> {
 
     const username: string = core.getInput('username');
     const pwd: string = core.getInput('password');
-    const force: boolean = core.getBooleanInput('force');
+    const force: boolean = core.getInput('force').toLowerCase() === 'true';
     core.info(`Input force: ${force}`);
 
     const inputName = core.getInput('name');
