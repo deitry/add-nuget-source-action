@@ -53,11 +53,11 @@ test('parse multiple sources', async () => {
 test('run with a env/stdout protocol', () => {
   process.env['INPUT_URL'] = 'https://api.nuget.org/v3/index.json';
   const np = process.execPath;
-  const ip = path.join(__dirname, '..', 'dist', 'main.js');
+  const main = path.join(__dirname, '..', 'dist', 'main.js');
   const options: cp.ExecFileSyncOptions = {
     env: process.env
   };
-  console.log(cp.execFileSync(np, [ip], options).toString());
+  console.log(cp.execFileSync(np, [main], options).toString());
 
   // disable warning about missing assert
   expect(true).toBe(true);
