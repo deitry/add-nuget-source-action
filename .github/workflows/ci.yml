@@ -64,6 +64,7 @@ jobs:
         id: test-action
         uses: ./
         with:
+          name: private-package-source
           url: https://nuget.pkg.github.com/my-org/index.json
           username: arrivederci
           password: 123
