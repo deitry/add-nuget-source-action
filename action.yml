@@ -18,10 +18,10 @@ inputs:
   password:
     required: false
     description: 'Password for private NuGet package source access'
-  force:
+  skipIfExists:
     required: false
     default: 'false'
-    description: 'If true, existing entry with the same URL will be overwritten'
+    description: 'If true, existing entry with the same URL will be skipped'
 
 outputs:
   source_name:
