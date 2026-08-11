@@ -2,6 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Make Bundle: Format & Package",
+      "group": "build",
+      "type": "shell",
+      "command": "npm run bundle"
+    },
+    {
       "label": "Run tests",
       "group": "test",
       "type": "shell",

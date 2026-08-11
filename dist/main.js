@@ -24,7 +24,7 @@ function run() {
                     core.info(`Source ${url} already exists`);
                     return;
                 }
-                core.info(`Source ${url} already exists, removing it (skipIfExists=false  )`);
+                core.info(`Source ${url} already exists, removing it (skipIfExists=false)`);
                 const removeCommand = `dotnet nuget remove source "${existingSource.name}"`;
                 core.info(`Removing source: ${removeCommand}`);
                 (0, child_process_1.execSync)(removeCommand, { stdio: 'inherit' });
