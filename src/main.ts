@@ -12,8 +12,9 @@ async function run(): Promise<void> {
 
     const username: string = core.getInput('username');
     const pwd: string = core.getInput('password');
-    const force: boolean = core.getInput('force').toLowerCase() === 'true';
-    core.info(`Input force: ${force}`);
+    const skipIfExists: boolean =
+      core.getInput('skipIfExists').toLowerCase() === 'true';
+    core.info(`Input skipIfExists: ${skipIfExists}`);
 
     const inputName = core.getInput('name');
     core.info(`Input name: ${inputName}`);
@@ -24,12 +25,14 @@ async function run(): Promise<void> {
       element => element.url === url
     );
     if (existingSource) {
-      if (!force) {
+      if (skipIfExists) {
         core.info(`Source ${url} already exists`);
         return;
       }
 
-      core.info(`Source ${url} already exists, removing it (force=true)`);
+      core.info(
+        `Source ${url} already exists, removing it (skipIfExists=false)`
+      );
       const removeCommand = `dotnet nuget remove source "${existingSource.name}"`;
       core.info(`Removing source: ${removeCommand}`);
       execSync(removeCommand, { stdio: 'inherit' });

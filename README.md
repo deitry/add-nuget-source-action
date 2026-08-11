@@ -13,7 +13,7 @@ Adds NuGet source and removes it in the end of the workflow. This is useful when
     name: my-private-source
     username: arrivederci
     password: ${{ secrets.MY_SECRET }}
-    force: true
+    skipIfExists: true
 ```
 
 You can then reference the source name in subsequent steps:
@@ -28,3 +28,10 @@ If `name` is not specified, a random GUID is used. You can still get the name vi
 ```yaml
 - run: echo "Source name is ${{ steps.add-source.outputs.source_name }}"
 ```
+
+# CHANGELOG
+
+## v3
+
+- Use `node24`
+- `force` option replace with `skipIfExists`, effectively inverting the logic. Now, if `skipIfExists` is set to true, existing entry with the same URL will be skipped instead of overwritten. Default behaviour works as `force: true`.
