@@ -84,7 +84,7 @@ describe('main run function', () => {
     name?: string;
     username?: string;
     password?: string;
-    force?: boolean;
+    skipIfExists?: boolean;
     existingSources?: { name: string; url: string }[];
   }) => {
     // Reset mocks
@@ -99,14 +99,14 @@ describe('main run function', () => {
             return options.username || '';
           case 'password':
             return options.password || '';
-          case 'force':
-            return options.force ? 'true' : 'false';
+          case 'skipIfExists':
+            return options.skipIfExists ? 'true' : 'false';
           default:
             return '';
         }
       }),
       getBooleanInput: jest.fn((inputName: string) => {
-        if (inputName === 'force') return options.force || false;
+        if (inputName === 'skipIfExists') return options.skipIfExists || false;
         return false;
       }),
       setOutput: jest.fn(),
@@ -141,11 +141,11 @@ describe('main run function', () => {
     return { mockCore, mockExecSync, mockGetPackageSourceList, mockUuidV4 };
   };
 
-  describe('force input', () => {
-    test('should skip adding source when it already exists and force=false', async () => {
+  describe('skipIfExists input', () => {
+    test('should skip adding source when it already exists and skipIfExists=true', async () => {
       const { mockCore, mockExecSync } = await runMain({
         url: 'https://api.nuget.org/v3/index.json',
-        force: false,
+        skipIfExists: true,
         existingSources: [
           { name: 'nuget.org', url: 'https://api.nuget.org/v3/index.json' }
         ]
@@ -157,17 +157,17 @@ describe('main run function', () => {
       expect(mockExecSync).not.toHaveBeenCalled();
     });
 
-    test('should remove and re-add source when it already exists and force=true', async () => {
+    test('should remove and re-add source when it already exists and skipIfExists=false', async () => {
       const { mockCore, mockExecSync } = await runMain({
         url: 'https://api.nuget.org/v3/index.json',
-        force: true,
+        skipIfExists: false,
         existingSources: [
           { name: 'nuget.org', url: 'https://api.nuget.org/v3/index.json' }
         ]
       });
 
       expect(mockCore.info).toHaveBeenCalledWith(
-        'Source https://api.nuget.org/v3/index.json already exists, removing it (force=true)'
+        'Source https://api.nuget.org/v3/index.json already exists, removing it (skipIfExists=false)'
       );
       expect(mockExecSync).toHaveBeenCalledWith(
         'dotnet nuget remove source "nuget.org"',
@@ -183,7 +183,7 @@ describe('main run function', () => {
     test('should add source normally when no existing source found', async () => {
       const { mockExecSync } = await runMain({
         url: 'https://api.nuget.org/v3/index.json',
-        force: false,
+        skipIfExists: false,
         existingSources: []
       });
 
